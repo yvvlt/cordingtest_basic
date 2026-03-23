@@ -3,6 +3,7 @@ menu = {"커피":2000, "라떼":2500, "그린티":3000,"카페모카":3500, "카
 price = 0
 buy_list = []
 
+
 while(True):
     print("\n", menu, "\n")
     choice = input("원하시는 메뉴를 고르세요: ('0' 입력 시 종료): ")
