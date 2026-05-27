@@ -1,0 +1,68 @@
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+def minValueNode(node):
+    current = node
+    while current.left is not None:
+        current = current.left
+    return current
+
+def deleteNode(root, key):
+    if root is None:
+        return root
+
+    # 삭제할 키가 루트보다 작은 경우 왼쪽 서브트리에서 삭제
+    if key < root.key:
+        root.left = deleteNode(root.left, key)
+
+    # 삭제할 키가 루트보다 큰 경우 오른쪽 서브트리에서 삭제
+    elif key > root.key:
+        root.right = deleteNode(root.right, key)
+
+    # 삭제할 노드를 찾은 경우
+    else:
+        # 자식이 없는 경우 또는 자식이 한 개인 경우
+        if root.left is None:
+            temp = root.right
+            root = None
+            return temp
+        elif root.right is None:
+            temp = root.left
+            root = None
+            return temp
+
+        # 자식이 두 개인 경우: 중위 후속자 사용
+        temp = minValueNode(root.right)  # 오른쪽 서브트리에서 가장 작은 값 노드 찾기
+        root.key = temp.key              # 현재 노드의 값을 후속자 값으로 대체
+        root.right = deleteNode(root.right, temp.key)  # 후속자 노드 삭제
+
+    return root
+
+# 트리 출력 함수 (중위 순회)
+def inorder(root):
+    if root:
+        inorder(root.left)
+        print(root.key, end=' ')
+        inorder(root.right)
+
+# 사용 예시
+if __name__ == '__main__':
+    root = Node(60)
+    root.left = Node(40)
+    root.right = Node(85)
+    root.left.left = Node(5)
+    root.left.right = Node(50)
+    root.left.right.left = Node(30)
+    root.left.right.left.left = Node(10)
+
+    print("중위 순회 전:")
+    inorder(root)
+    print()
+
+    root = deleteNode(root, 40)
+
+    print("40 삭제 후 중위 순회:")
+    inorder(root)
